@@ -1,4 +1,4 @@
-def ceasar_cipher(string, shift)
+def caesar_cipher(string, shift)
   string_converted = string.split("").map do |char|
     if char.ord.between?(65, 90) # To check if capital letter or not
       if (char.ord + shift) > 90
@@ -25,4 +25,4 @@ def ceasar_cipher(string, shift)
   code_string.join("")
 end
 
-ceasar_cipher("What a string!", 5)
+# caesar_cipher("What a string!", 5)
