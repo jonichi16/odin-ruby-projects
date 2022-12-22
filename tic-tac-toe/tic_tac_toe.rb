@@ -3,14 +3,14 @@
 # * This will contain board maker
 module Board
   WIN_CONDITIONS = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-    [1, 4, 7],
-    [2, 5, 8],
-    [3, 6, 9],
-    [1, 5, 9],
-    [3, 5, 7]
+    %w[1 2 3],
+    %w[4 5 6],
+    %w[7 8 9],
+    %w[1 4 7],
+    %w[2 5 8],
+    %w[3 6 9],
+    %w[1 5 9],
+    %w[3 5 7]
   ].freeze
 
   def board
@@ -46,7 +46,9 @@ end
 # * This will create the Tic Tac Toe Game
 class Game
   include Board
-  attr_reader :players
+  attr_reader :players, :is_win
+
+  @is_win = false
 
   def initialize
     @players = []
@@ -67,6 +69,25 @@ class Game
     (1..2).each { |num| create_players(num, players) }
     puts "\n\n"
     create_board(board)
+    play
+  end
+
+  def play
+    until @is_win
+      players.each do |player|
+        puts "What's #{player.name} move?"
+        move = gets.chomp
+        player.player_move << move
+        win(player.player_move)
+      end
+    end
+  end
+
+  def win(move)
+    return unless move.length >= 3
+
+    combination = move[-3..]
+    @is_win = WIN_CONDITIONS.include?(combination.sort)
   end
 end
 
