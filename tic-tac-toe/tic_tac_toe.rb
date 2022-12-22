@@ -14,19 +14,25 @@ module Board
   ].freeze
 
   def board
-    @board = [%w[1 2 3], %w[4 5 6], %w[7 8 9]]
+    @board = {}
+    (1..9).each do |num|
+      @board[num.to_s] = num.to_s
+    end
+    @board
+    # @board = [%w[1 2 3], %w[4 5 6], %w[7 8 9]]
   end
 
-  def edit_board(_position, character)
-    @board[0][0] = character
+  def edit_board(position, character)
+    @board[position] = character
     create_board(@board)
   end
 
-  def create_board(position)
-    position.each_with_index do |array, i|
-      puts "\t #{array[0]} | #{array[1]} | #{array[2]}"
-      puts "\t---+---+---" unless i == 2
-    end
+  def create_board(board)
+    puts "\t #{board['1']} | #{board['2']} | #{board['3']} "
+    puts "\t---+---+---"
+    puts "\t #{board['4']} | #{board['5']} | #{board['6']} "
+    puts "\t---+---+---"
+    puts "\t #{board['7']} | #{board['8']} | #{board['9']} "
   end
 
   def create_players(num, players)
@@ -46,9 +52,10 @@ end
 # * This will create the Tic Tac Toe Game
 class Game
   include Board
-  attr_reader :players, :is_win
+  attr_reader :players, :is_win, :turn
 
   @is_win = false
+  @turn = 1
 
   def initialize
     @players = []
@@ -75,8 +82,11 @@ class Game
   def play
     until @is_win
       players.each do |player|
+        break if @is_win
+
         puts "What's #{player.name} move?"
         move = gets.chomp
+        edit_board(move, player.character)
         player.player_move << move
         win(player.player_move)
       end
@@ -85,6 +95,8 @@ class Game
 
   def win(move)
     return unless move.length >= 3
+
+    puts 'Draw! Try Again.' if @is_win == false && @turn == 9
 
     combination = move[-3..]
     @is_win = WIN_CONDITIONS.include?(combination.sort)
