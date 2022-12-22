@@ -21,8 +21,8 @@ module Board
     puts "\t 7 | 8 | 9 \t\t#{player2.name} (#{player2.character}) Score: #{player2.score}"
   end
 
-  def create_players(num)
-    player = Player.new(num)
+  def create_players(num, players)
+    player = Player.new(num, players)
     unique_character(player) unless players[0].nil?
     add_player(player)
   end
@@ -56,7 +56,7 @@ class Game
 
   def game_start
     welcome
-    (1..2).each { |num| create_players(num) }
+    (1..2).each { |num| create_players(num, players) }
     puts "\n\n"
     create_board(players[0], players[1])
   end
@@ -67,13 +67,24 @@ class Player
   include Board
   attr_accessor :name, :character, :score, :player_move
 
-  def initialize(num)
-    puts "What's player #{num} name?"
+  def initialize(num, players)
+    puts "What is player #{num}'s name?"
     self.name = gets.chomp
-    puts "What's #{name} character?"
-    self.character = gets.chomp
+    puts "What is #{name}'s character?"
+    puts "(#{players[0].character}) is already taken" if num == 2
+    self.character = character_check
     self.score = 0
     self.player_move = []
+  end
+
+  def character_check
+    character = gets.chomp
+    until character.match?(/^\w$/)
+      puts "\nInvalid Character. Please use one character only"
+      puts "What is #{name}'s character?"
+      character = gets.chomp
+    end
+    character
   end
 end
 
