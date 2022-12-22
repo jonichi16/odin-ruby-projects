@@ -13,12 +13,20 @@ module Board
     [3, 5, 7]
   ].freeze
 
-  def create_board(player1, player2)
-    puts "\t 1 | 2 | 3 \t\tScoreboards:"
-    puts "\t---+---+---"
-    puts "\t 4 | 5 | 6 \t\t#{player1.name} (#{player1.character}) Score: #{player1.score}"
-    puts "\t---+---+---"
-    puts "\t 7 | 8 | 9 \t\t#{player2.name} (#{player2.character}) Score: #{player2.score}"
+  def board
+    @board = [%w[1 2 3], %w[4 5 6], %w[7 8 9]]
+  end
+
+  def edit_board(_position, character)
+    @board[0][0] = character
+    create_board(@board)
+  end
+
+  def create_board(position)
+    position.each_with_index do |array, i|
+      puts "\t #{array[0]} | #{array[1]} | #{array[2]}"
+      puts "\t---+---+---" unless i == 2
+    end
   end
 
   def create_players(num, players)
@@ -58,7 +66,7 @@ class Game
     welcome
     (1..2).each { |num| create_players(num, players) }
     puts "\n\n"
-    create_board(players[0], players[1])
+    create_board(board)
   end
 end
 
