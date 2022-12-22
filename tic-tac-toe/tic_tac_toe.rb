@@ -2,7 +2,7 @@
 
 # * This will contain board maker
 module Board
-  win_condition = [
+  WIN_CONDITIONS = [
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9],
@@ -11,10 +11,10 @@ module Board
     [3, 6, 9],
     [1, 5, 9],
     [3, 5, 7]
-  ]
+  ].freeze
 
   def create_board(player1, player2)
-    puts "\t 1 | 2 | 3 \t\tScores:"
+    puts "\t 1 | 2 | 3 \t\tScoreboards:"
     puts "\t---+---+---"
     puts "\t 4 | 5 | 6 \t\t#{player1.name} (#{player1.character}) Score: #{player1.score}"
     puts "\t---+---+---"
