@@ -22,11 +22,7 @@ module Board
   end
 
   def create_players(num)
-    puts "What is player #{num}'s name?"
-    player_name = gets.chomp
-    puts "What is #{player_name}'s character?"
-    player_character = gets.chomp
-    player = Player.new(player_name, player_character)
+    player = Player.new(num)
     unique_character(player) unless players[0].nil?
     add_player(player)
   end
@@ -63,7 +59,6 @@ class Game
     (1..2).each { |num| create_players(num) }
     puts "\n\n"
     create_board(players[0], players[1])
-    p players
   end
 end
 
@@ -72,9 +67,11 @@ class Player
   include Board
   attr_accessor :name, :character, :score, :player_move
 
-  def initialize(name, character)
-    self.name = name
-    self.character = character
+  def initialize(num)
+    puts "What's player #{num} name?"
+    self.name = gets.chomp
+    puts "What's #{name} character?"
+    self.character = gets.chomp
     self.score = 0
     self.player_move = []
   end
