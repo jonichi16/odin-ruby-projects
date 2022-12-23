@@ -52,10 +52,9 @@ end
 # * This will create the Tic Tac Toe Game
 class Game
   include Board
-  attr_reader :players, :is_win, :turn
+  attr_accessor :players, :stop
 
-  @is_win = false
-  @turn = 1
+  @stop = false
 
   def initialize
     @players = []
@@ -80,9 +79,9 @@ class Game
   end
 
   def play
-    until @is_win
+    until @stop
       players.each do |player|
-        break if @is_win
+        break if @stop
 
         puts "What's #{player.name} move?"
         move = gets.chomp
@@ -94,12 +93,15 @@ class Game
   end
 
   def win(move)
+    if @stop == false && players[0].player_move.length == 5
+      puts 'Draw! Try Again.'
+      @stop == true
+    end
+
     return unless move.length >= 3
 
-    puts 'Draw! Try Again.' if @is_win == false && @turn == 9
-
     combination = move[-3..]
-    @is_win = WIN_CONDITIONS.include?(combination.sort)
+    @stop = WIN_CONDITIONS.include?(combination.sort)
   end
 end
 
