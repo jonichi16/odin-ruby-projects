@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# *This is the module for the TicTacToe game
+# *Module for creating the game
 module TicTacToe
   WIN_CONDITION = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]].freeze
 
@@ -27,7 +27,7 @@ module TicTacToe
   end
 end
 
-# *This will create the game instance
+# *Class for the game logic
 class Game
   include TicTacToe
   attr_accessor :player1, :player2, :current_player
@@ -50,9 +50,13 @@ class Game
       self.current_player = player1
     end
   end
+
+  def win(player)
+    # method here
+  end
 end
 
-# *This will create the player instance
+# *Class for creating player
 class Player
   attr_accessor :name, :character
 
