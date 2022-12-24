@@ -42,6 +42,14 @@ class Game
   def start
     display_board(board)
   end
+
+  def player_switch
+    if current_player == player1
+      self.current_player = player2
+    elsif current_player == player2
+      self.current_player = player1
+    end
+  end
 end
 
 # *This will create the player instance
@@ -56,3 +64,8 @@ end
 
 tictactoe = Game.new
 tictactoe.start
+p tictactoe.current_player.name
+tictactoe.player_switch
+p tictactoe.current_player.name
+tictactoe.player_switch
+p tictactoe.current_player.name
