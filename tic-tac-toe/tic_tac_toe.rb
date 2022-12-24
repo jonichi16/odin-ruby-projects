@@ -14,6 +14,17 @@ module TicTacToe
     puts "What's #{player}'s name?"
     Player.new(gets.chomp, character)
   end
+
+  def board
+    [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+  end
+
+  def display_board(board)
+    board.each_with_index do |row, i|
+      puts "\t #{row[0]} | #{row[1]} | #{row[2]} "
+      puts "\t---+---+---" unless i == 2
+    end
+  end
 end
 
 # *This will create the game instance
@@ -23,13 +34,13 @@ class Game
 
   def initialize
     welcome
-    p self.player1 = create_player('Player1', 'X')
-    p self.current_player = player1
-    p self.player2 = create_player('Player2', 'O')
+    self.player1 = create_player('Player1', 'X')
+    self.current_player = player1
+    self.player2 = create_player('Player2', 'O')
   end
 
   def start
-    # method body
+    display_board(board)
   end
 end
 
@@ -43,4 +54,5 @@ class Player
   end
 end
 
-Game.new
+tictactoe = Game.new
+tictactoe.start
