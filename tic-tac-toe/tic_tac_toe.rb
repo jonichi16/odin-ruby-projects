@@ -1,8 +1,20 @@
 # frozen_string_literal: true
 
-# *Module for creating the game
-module TicTacToe
-  WIN_CONDITION = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]].freeze
+WIN_CONDITION = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]].freeze
+
+# *Class for the game logic
+class Game
+  attr_accessor :player1, :player2, :current_player, :board, :current_move, :has_win
+
+  def initialize
+    welcome
+    @board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    @current_move = 0
+    @has_win = false
+    self.player1 = create_player('Player1', 'X')
+    self.current_player = player1
+    self.player2 = create_player('Player2', 'O')
+  end
 
   def welcome
     puts "\t+==============================+"
@@ -15,10 +27,6 @@ module TicTacToe
     Player.new(gets.chomp, character)
   end
 
-  def board
-    [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  end
-
   def display_board(board)
     puts "\t #{board[0]} | #{board[1]} | #{board[2]} "
     puts "\t---+---+---"
@@ -26,25 +34,12 @@ module TicTacToe
     puts "\t---+---+---"
     puts "\t #{board[6]} | #{board[7]} | #{board[8]} "
   end
-end
-
-# *Class for the game logic
-class Game
-  include TicTacToe
-  attr_accessor :player1, :player2, :current_player
-
-  def initialize
-    welcome
-    self.player1 = create_player('Player1', 'X')
-    self.current_player = player1
-    self.player2 = create_player('Player2', 'O')
-  end
 
   def start
     display_board(board)
-    while player1
+    until has_win
       move(current_player)
-      player_switch
+      player_switch if legal_move
     end
   end
 
@@ -58,18 +53,30 @@ class Game
 
   def move(player)
     puts "What's #{player.name}'s move?"
-    move = gets.chomp
-    place_move(move, player, board)
-    player.player_move << move.to_i
+    self.current_move = gets.to_i
+    place_move(current_move, player)
+    player.player_move << current_move
+    player_win(player)
   end
 
-  def place_move(position, player, board)
-    board[position.to_i - 1] = player.character
+  def place_move(position, player)
+    board[position - 1] = player.character
     display_board(board)
   end
 
-  def win(player)
-    # method here
+  def legal_move
+    player1.player_move.none?(current_move) || player2.player_move.none?(current_move)
+  end
+
+  def player_win(player)
+    WIN_CONDITION.each do |array|
+      next unless player.player_move.include?(array[0]) &&
+                  player.player_move.include?(array[1]) &&
+                  player.player_move.include?(array[2])
+
+      self.has_win = true
+      puts "#{player.name} WON!"
+    end
   end
 end
 
@@ -86,8 +93,3 @@ end
 
 tictactoe = Game.new
 tictactoe.start
-p tictactoe.current_player.name
-tictactoe.player_switch
-p tictactoe.current_player.name
-tictactoe.player_switch
-p tictactoe.current_player.name
