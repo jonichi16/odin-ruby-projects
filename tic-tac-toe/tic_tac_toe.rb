@@ -16,14 +16,15 @@ module TicTacToe
   end
 
   def board
-    [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    [1, 2, 3, 4, 5, 6, 7, 8, 9]
   end
 
   def display_board(board)
-    board.each_with_index do |row, i|
-      puts "\t #{row[0]} | #{row[1]} | #{row[2]} "
-      puts "\t---+---+---" unless i == 2
-    end
+    puts "\t #{board[0]} | #{board[1]} | #{board[2]} "
+    puts "\t---+---+---"
+    puts "\t #{board[3]} | #{board[4]} | #{board[5]} "
+    puts "\t---+---+---"
+    puts "\t #{board[6]} | #{board[7]} | #{board[8]} "
   end
 end
 
@@ -41,6 +42,10 @@ class Game
 
   def start
     display_board(board)
+    while player1
+      move(current_player)
+      player_switch
+    end
   end
 
   def player_switch
@@ -51,6 +56,18 @@ class Game
     end
   end
 
+  def move(player)
+    puts "What's #{player.name}'s move?"
+    move = gets.chomp
+    place_move(move, player, board)
+    player.player_move << move.to_i
+  end
+
+  def place_move(position, player, board)
+    board[position.to_i - 1] = player.character
+    display_board(board)
+  end
+
   def win(player)
     # method here
   end
@@ -58,11 +75,12 @@ end
 
 # *Class for creating player
 class Player
-  attr_accessor :name, :character
+  attr_accessor :name, :character, :player_move
 
   def initialize(name, character)
     self.name = name
     self.character = character
+    self.player_move = []
   end
 end
 
