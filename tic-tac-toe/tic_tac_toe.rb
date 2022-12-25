@@ -70,12 +70,15 @@ class Game
   end
 
   def pick_move(player)
-    puts "What's #{player.name}'s move?"
-    self.current_move = gets.to_i
+    until legal_move
+      puts "What's #{player.name}'s move?"
+      self.current_move = gets.to_i
+      puts 'INVALID MOVE! Try Again' unless legal_move
+    end
   end
 
   def legal_move
-    player1.player_move.none?(current_move) || player2.player_move.none?(current_move)
+    (board[current_move - 1].is_a? Integer) && (1..9).include?(current_move)
   end
 
   def player_win(player)
