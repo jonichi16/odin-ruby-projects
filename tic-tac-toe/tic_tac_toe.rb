@@ -39,7 +39,7 @@ class Game
     display_board(board)
     until has_win
       move(current_player)
-      player_switch if legal_move
+      player_switch
     end
   end
 
@@ -52,8 +52,13 @@ class Game
   end
 
   def move(player)
-    puts "What's #{player.name}'s move?"
-    self.current_move = gets.to_i
+    if draw_game
+      self.has_win = true
+      puts 'DRAW GAME!'
+      return
+    end
+
+    pick_move(player)
     place_move(current_move, player)
     player.player_move << current_move
     player_win(player)
@@ -62,6 +67,11 @@ class Game
   def place_move(position, player)
     board[position - 1] = player.character
     display_board(board)
+  end
+
+  def pick_move(player)
+    puts "What's #{player.name}'s move?"
+    self.current_move = gets.to_i
   end
 
   def legal_move
@@ -77,6 +87,10 @@ class Game
       self.has_win = true
       puts "#{player.name} WON!"
     end
+  end
+
+  def draw_game
+    player1.player_move.length == 5 && !has_win
   end
 end
 
