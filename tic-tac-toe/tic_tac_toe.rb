@@ -14,6 +14,7 @@ class Game
     self.player1 = create_player('Player1', 'X')
     self.current_player = player1
     self.player2 = create_player('Player2', 'O')
+    start
   end
 
   def welcome
@@ -41,6 +42,7 @@ class Game
       move(current_player)
       player_switch
     end
+    reset
   end
 
   def player_switch
@@ -95,6 +97,16 @@ class Game
   def draw_game
     player1.player_move.length == 5 && !has_win
   end
+
+  def reset
+    puts 'Play again? (y/n)'
+    answer = gets.chomp
+    if answer.downcase == 'y'
+      Game.new
+    else
+      puts 'Thank you for playing!'
+    end
+  end
 end
 
 # *Class for creating player
@@ -108,5 +120,4 @@ class Player
   end
 end
 
-tictactoe = Game.new
-tictactoe.start
+Game.new
