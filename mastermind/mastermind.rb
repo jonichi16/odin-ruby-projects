@@ -48,7 +48,12 @@ class Game
   end
 
   def start
-    p computer.code
+    play
+    puts "\nCongrats! You've cracked the code!" if code_cracked
+    puts "Sorry! You've run out of turns. Try Again" if turns.zero? && code_cracked == false
+  end
+
+  def play
     until code_cracked || turns.zero?
       puts "Turns remaining: #{turns}"
       guessing
@@ -111,7 +116,7 @@ class Computer
     guess.each_with_index do |num, i|
       if code[i] == num
         response.push('X')
-      elsif guess.one?(code[i])
+      elsif guess.include?(code[i])
         response.push('O')
       else
         response.push(' ')
