@@ -31,16 +31,25 @@ end
 # *Class for the game logic
 class Game
   include Rules
-  attr_accessor :player
+  attr_accessor :player, :computer, :turns
 
   def initialize
     welcome
     display_rules
+    create_player
+    start
+  end
+
+  def create_player
+    self.turns = 12
     self.player = Player.new
+    self.computer = Computer.new
   end
 
   def start
-
+    player.guess
+    p player.player_choice
+    p computer.code
   end
 end
 
@@ -50,6 +59,21 @@ class Player
 
   def initialize
     self.player_choice = []
+  end
+
+  def guess
+    puts "You're the Code Breaker! What is your guess?"
+    guess = gets.chomp.split('')
+    guess.each { |num| player_choice.push(num.to_i) }
+  end
+end
+
+# *Class for the computer
+class Computer
+  attr_accessor :code
+
+  def initialize
+    self.code = [rand(1..6), rand(1..6), rand(1..6), rand(1..6)]
   end
 end
 
