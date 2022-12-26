@@ -48,8 +48,6 @@ class Game
 
   def start
     player.guess
-    p player.player_choice
-    p computer.code
   end
 end
 
@@ -58,13 +56,23 @@ class Player
   attr_accessor :player_choice
 
   def initialize
-    self.player_choice = []
+    self.player_choice = ''
   end
 
   def guess
-    puts "You're the Code Breaker! What is your guess?"
-    guess = gets.chomp.split('')
-    guess.each { |num| player_choice.push(num.to_i) }
+    until legal_move
+      puts "You're the Code Breaker! What is your guess?"
+      self.player_choice = gets.chomp
+      puts 'INVALID GUESS! Please try again' unless legal_move
+    end
+  end
+
+  def player_guess
+    player_choice.split('').map(&:to_i)
+  end
+
+  def legal_move
+    player_choice.match?(/^[1-6]{4}$/)
   end
 end
 
