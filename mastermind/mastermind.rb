@@ -48,6 +48,10 @@ class Game
 
   def start
     player.guess
+    computer.check_guess(player.player_guess)
+    p computer.code
+    p player.player_guess
+    p computer.response.sort.reverse
   end
 end
 
@@ -78,10 +82,23 @@ end
 
 # *Class for the computer
 class Computer
-  attr_accessor :code
+  attr_accessor :code, :response
 
   def initialize
     self.code = [rand(1..6), rand(1..6), rand(1..6), rand(1..6)]
+    self.response = []
+  end
+
+  def check_guess(guess)
+    guess.each_with_index do |num, i|
+      if code[i] == num
+        response.push('O')
+      elsif code.one?(num)
+        response.push('X')
+      else
+        response.push(' ')
+      end
+    end
   end
 end
 
