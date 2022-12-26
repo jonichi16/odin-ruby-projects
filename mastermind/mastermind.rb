@@ -21,7 +21,7 @@ module Rules
   def welcome
     puts "\t+=============================+"
     puts "\t|==  Welcome to Mastermind  ==|"
-    puts "\t+=============================+\n\n\n"
+    puts "\t+=============================+\n"
     # puts 'Please choose your role?'
     # puts "1 - Code Maker\t2 - Code Breaker"
     # self.player_role = gets.to_i
@@ -31,9 +31,11 @@ end
 # *Class for the game logic
 class Game
   include Rules
-  attr_accessor :player, :computer, :turns
+  attr_accessor :player, :computer, :turns, :code_cracked
 
   def initialize
+    self.code_cracked = false
+    self.turns = 12
     welcome
     display_rules
     create_player
@@ -41,17 +43,33 @@ class Game
   end
 
   def create_player
-    self.turns = 12
     self.player = Player.new
     self.computer = Computer.new
   end
 
   def start
+    p computer.code
+    until code_cracked || turns.zero?
+      puts "Turns remaining: #{turns}"
+      guessing
+      self.turns -= 1
+      win?
+    end
+  end
+
+  def guessing
     player.guess
     computer.check_guess(player.player_guess)
-    p computer.code
-    p player.player_guess
-    p computer.response.sort.reverse
+    computer.display_response
+  end
+
+  def win?
+    if computer.response.all?('X')
+      self.code_cracked = true
+    else
+      player.player_choice = ''
+      computer.response = []
+    end
   end
 end
 
@@ -99,6 +117,14 @@ class Computer
         response.push(' ')
       end
     end
+  end
+
+  def display_response
+    sorted_response = response.sort.reverse
+    puts "\nCode Maker Response"
+    puts " #{sorted_response[0]} | #{sorted_response[1]} "
+    puts '---+---'
+    puts " #{sorted_response[2]} | #{sorted_response[3]}"
   end
 end
 
