@@ -12,8 +12,8 @@ module Rules
     puts '1) Code Maker will set a 4 digit code from 1 - 6 (can be duplicate e.g. 1122, 1145)'
     puts '2) Input the 4 digit number of your guess'
     puts '3) Code Maker will give a response based on your guess'
-    puts "\t O - one out of four of your guess has the correct number and correct position"
-    puts "\t X - one out of four of your guess has the correct number but wrong position"
+    puts "\t X - one out of four of your guess has the correct number and correct position"
+    puts "\t O - one out of four of your guess has the correct number but wrong position"
     puts '4) Code Maker earns 1 point for every incorrect guess and 3 points'
     puts "  if you did not cracked the code with 12 guesses\n\n"
   end
@@ -92,9 +92,9 @@ class Computer
   def check_guess(guess)
     guess.each_with_index do |num, i|
       if code[i] == num
-        response.push('O')
-      elsif code.one?(num)
         response.push('X')
+      elsif guess.one?(code[i])
+        response.push('O')
       else
         response.push(' ')
       end
