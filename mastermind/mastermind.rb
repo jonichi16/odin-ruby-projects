@@ -64,7 +64,7 @@ class Game
 
   def guessing
     player.guess
-    computer.check_guess(player.player_guess)
+    computer.check_guess(player.player_guess, computer.code)
     computer.display_response
   end
 
@@ -112,11 +112,11 @@ class Computer
     self.response = []
   end
 
-  def check_guess(guess)
-    guess.each_with_index do |num, i|
-      if code[i] == num
+  def check_guess(guess, code)
+    code.each_with_index do |num, i|
+      if num == guess[i]
         response.push('X')
-      elsif guess.include?(code[i])
+      elsif guess.uniq.include?(num)
         response.push('O')
       else
         response.push(' ')
