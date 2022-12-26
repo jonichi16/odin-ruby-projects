@@ -49,8 +49,8 @@ class Game
 
   def start
     play
-    puts "\nCongrats! You've cracked the code!" if code_cracked
-    puts "Sorry! You've run out of turns. Try Again" if turns.zero? && code_cracked == false
+    puts "\nCongrats! You've cracked the code! The code is #{computer.code}" if code_cracked
+    puts "Sorry! You've run out of turns.The code is #{computer.code} Try Again" if turns.zero? && code_cracked == false
   end
 
   def play
