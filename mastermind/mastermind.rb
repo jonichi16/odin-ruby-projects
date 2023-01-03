@@ -54,6 +54,7 @@ class Game
   end
 
   def play
+    p computer.code
     until code_cracked || turns.zero?
       puts "Turns remaining: #{turns}"
       guessing
@@ -64,7 +65,7 @@ class Game
 
   def guessing
     player.guess
-    computer.check_guess(player.player_guess, computer.code)
+    computer.check_guess(player.player_guess)
     computer.display_response
   end
 
@@ -112,14 +113,17 @@ class Computer
     self.response = []
   end
 
-  def check_guess(guess, code)
-    code.each_with_index do |num, i|
-      if num == guess[i]
+  def check_guess(guess)
+    guess.each_with_index do |num, i|
+      if num == code[i]
         response.push('X')
-      elsif guess.uniq.include?(num)
-        response.push('O')
-      else
+        next
+      elsif code.none?(num)
         response.push(' ')
+      elsif code.include?(num)
+        next if guess.slice(0, i).include?(num)
+
+        response.push('O')
       end
     end
   end
