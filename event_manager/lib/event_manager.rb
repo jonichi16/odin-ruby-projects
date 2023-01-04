@@ -1,3 +1,4 @@
+require 'date'
 require 'csv'
 require 'google/apis/civicinfo_v2'
 require 'erb'
@@ -52,6 +53,8 @@ contents = CSV.open(
 
 template_letter = File.read('form_letter.erb')
 erb_template = ERB.new template_letter
+reg_hours = []
+reg_days = []
 
 contents.each do |row|
   id = row[0]
@@ -59,8 +62,39 @@ contents.each do |row|
   zipcode = clean_zipcode(row[:zipcode])
   legislators = legislators_by_zipcode(zipcode)
   homephone = clean_homephone(row[:homephone])
+  regdate = row[:regdate]
+
+  reg_date = DateTime.strptime(regdate, "%m/%d/%y %H:%M")
+  reg_hours.push(reg_date.hour)
+  reg_days.push(reg_date.wday)
 
   form_letter = erb_template.result(binding)
-
   save_thank_you_letter(id,form_letter)
 end
+
+def convert_day(day)
+  case day
+  when 1
+    'Sunday'
+  when 2
+    'Monday'
+  when 3
+    'Tuesday'
+  when 4
+    'Wednesday'
+  when 5
+    'Thursday'
+  when 6
+    'Friday'
+  when 7
+    'Saturday'
+  else
+    'Invalid date'
+  end
+end
+
+freq_hours = reg_hours.each_with_object(Hash.new(0)) {|v,h| h[v] += 1}.max_by(&:last)
+freq_days = reg_days.each_with_object(Hash.new(0)) {|v,h| h[v] += 1}.max_by(&:last)
+
+puts "Most active hour: #{freq_hours[0]}:00"
+puts "Most active day: #{convert_day(freq_days[0])}"
