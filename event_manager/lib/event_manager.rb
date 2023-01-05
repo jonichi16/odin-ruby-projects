@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'date'
 require 'csv'
 require 'google/apis/civicinfo_v2'
 require 'erb'
 
 def clean_zipcode(zipcode)
-  zipcode.to_s.rjust(5,"0")[0..4]
+  zipcode.to_s.rjust(5, '0')[0..4]
 end
 
 def clean_homephone(homephone)
-  homephone.gsub!(/[\D]/, '')
+  homephone.gsub!(/\D/, '')
   if homephone.length == 10
     homephone
   elsif homephone.length == 11 && homephone[0] == '1'
@@ -26,14 +28,14 @@ def legislators_by_zipcode(zip)
     civic_info.representative_info_by_address(
       address: zip,
       levels: 'country',
-      roles: ['legislatorUpperBody', 'legislatorLowerBody']
+      roles: %w[legislatorUpperBody legislatorLowerBody]
     ).officials
-  rescue
+  rescue StandardError
     'You can find your representatives by visiting www.commoncause.org/take-action/find-elected-officials'
   end
 end
 
-def save_thank_you_letter(id,form_letter)
+def save_thank_you_letter(id, form_letter)
   Dir.mkdir('output') unless Dir.exist?('output')
 
   filename = "output/thanks_#{id}.html"
@@ -64,12 +66,12 @@ contents.each do |row|
   homephone = clean_homephone(row[:homephone])
   regdate = row[:regdate]
 
-  reg_date = DateTime.strptime(regdate, "%m/%d/%y %H:%M")
+  reg_date = DateTime.strptime(regdate, '%m/%d/%y %H:%M')
   reg_hours.push(reg_date.hour)
   reg_days.push(reg_date.wday)
 
   form_letter = erb_template.result(binding)
-  save_thank_you_letter(id,form_letter)
+  save_thank_you_letter(id, form_letter)
 end
 
 def convert_day(day)
@@ -93,8 +95,8 @@ def convert_day(day)
   end
 end
 
-freq_hours = reg_hours.each_with_object(Hash.new(0)) {|v,h| h[v] += 1}.max_by(&:last)
-freq_days = reg_days.each_with_object(Hash.new(0)) {|v,h| h[v] += 1}.max_by(&:last)
+freq_hours = reg_hours.each_with_object(Hash.new(0)) { |v, h| h[v] += 1 }.max_by(&:last)
+freq_days = reg_days.each_with_object(Hash.new(0)) { |v, h| h[v] += 1 }.max_by(&:last)
 
 puts "Most active hour: #{freq_hours[0]}:00"
 puts "Most active day: #{convert_day(freq_days[0])}"
