@@ -1,7 +1,9 @@
 ------------------------------------
               HANGMAN 
 
-Rule: Try to guess the word with 5 - 12 character within 5 guesses.
+Rule: Try to guess the random word one letter at a time within 5 guesses.
 
 Press 1 Start new game
       2 Load Game
+      3 Quit
+      
