@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './lib/words'
+require './lib/manager'
 require 'yaml'
 
 # *Class for creating the game and game logic
@@ -27,6 +28,8 @@ class Game
   def start
     player_guess
     game_result if gameover
+    puts ''
+    puts ' Thank you for playing! '.center(50, '*')
   end
 
   def display_game
@@ -40,20 +43,26 @@ class Game
   def player_guess
     loop do
       display_game
-      print "\nType 'save' to save the game and exit\nEnter your guess:"
+      menu
       guess = gets.chomp.downcase
       player_save if guess == 'save'
-      play(guess)
+      play(guess) if guess != 'exit'
       break if exit_game(guess)
     end
   end
 
+  def menu
+    puts "\nType 'save' to save the game and exit"
+    puts "Type 'exit' to exit without saving"
+    print "\nEnter your guess: "
+  end
+
   def exit_game(guess)
-    gameover || guess == 'save'
+    gameover || guess == 'save' || guess == 'exit'
   end
 
   def play(guess)
-    if valid_guess(guess) && guess != 'save'
+    if invalid_guess(guess) && guess != 'save'
       puts "\nInvalid guess. Try Again"
     else
       check_guess(guess)
@@ -85,7 +94,7 @@ class Game
     remaining_guess.zero? || word == wordline.join('')
   end
 
-  def valid_guess(guess)
+  def invalid_guess(guess)
     guess.length > 1 || guess.match?(/[^a-z]/) || all_used_letters.include?(guess)
   end
 
