@@ -42,17 +42,21 @@ class Game
       print "\nType 'save' to save the game and exit\nEnter your guess:"
       guess = gets.chomp.downcase
       player_save if guess == 'save'
-      if valid_guess(guess) && guess != 'save'
-        puts "\nInvalid guess. Try Again"
-      else
-        check_guess(guess)
-      end
+      play(guess)
       break if exit_game(guess)
     end
   end
 
   def exit_game(guess)
     gameover || guess == 'save'
+  end
+
+  def play(guess)
+    if valid_guess(guess) && guess != 'save'
+      puts "\nInvalid guess. Try Again"
+    else
+      check_guess(guess)
+    end
   end
 
   def check_guess(guess)
