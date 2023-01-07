@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 require './lib/words'
-require './lib/manager'
 
-# *Class for creating the game
+# *Class for creating the game and game logic
 class Game
   include SelectableWords
-  include Save
   attr_accessor :word, :wordline, :remaining_guess, :used_letters, :all_used_letters
 
   def initialize
@@ -26,11 +24,8 @@ class Game
   end
 
   def start
-    puts File.read('rules.txt')
-    action = gets.chomp
-    load if action == '2'
     player_guess
-    game_result
+    game_result if gameover
   end
 
   def display_game
@@ -42,17 +37,22 @@ class Game
   end
 
   def player_guess
-    until gameover
+    loop do
       display_game
       print "\nType 'save' to save the game and exit\nEnter your guess:"
       guess = gets.chomp.downcase
       player_save if guess == 'save'
-      if valid_guess(guess)
+      if valid_guess(guess) && guess != 'save'
         puts "\nInvalid guess. Try Again"
       else
         check_guess(guess)
       end
+      break if exit_game(guess)
     end
+  end
+
+  def exit_game(guess)
+    gameover || guess == 'save'
   end
 
   def check_guess(guess)
@@ -65,20 +65,6 @@ class Game
       used_letters.push(guess)
       self.remaining_guess -= 1
     end
-  end
-
-  def player_save
-    print 'Enter filename:'
-    fname = gets.chomp.downcase
-    save_game(fname)
-  end
-
-  def load
-    puts "\nSelect saved file:"
-    Dir.glob('./saved/*.yaml').each_with_index { |file, i| puts "#{i + 1} #{file.to_s[8..-6]}" }
-    print 'Enter the number of your file: '
-    file = gets.chomp.to_i
-    load_game(file)
   end
 
   def game_result
@@ -97,7 +83,20 @@ class Game
   def valid_guess(guess)
     guess.length > 1 || guess.match?(/[^a-z]/) || all_used_letters.include?(guess)
   end
-end
 
-game = Game.new
-game.start
+  def save_game(fname)
+    if File.exist? "./saved/#{fname}.yaml"
+      puts 'Filename already exist. Please choose other name'
+      player_save
+    else
+      File.open("./saved/#{fname}.yaml", 'w') { |file| file.puts YAML.dump(self) }
+    end
+  end
+
+  def player_save
+    Dir.mkdir 'saved' unless Dir.exist? 'saved'
+    print 'Enter filename:'
+    fname = gets.chomp.downcase
+    save_game(fname)
+  end
+end
