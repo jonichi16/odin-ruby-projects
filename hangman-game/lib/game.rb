@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require './lib/words'
+require 'yaml'
 
 # *Class for creating the game and game logic
 class Game
