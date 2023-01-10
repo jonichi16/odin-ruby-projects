@@ -2,8 +2,9 @@
 
 require './lib/linked_list'
 
-list = LinkedList.new
-p list
-p list.append('Jon')
-p list.append('Luffy')
-p list.prepend('Nami')
+list = LinkedList.new(1)
+list.prepend(3)
+list.append(5)
+list.insert_at(3, 1)
+list.pop
+puts list

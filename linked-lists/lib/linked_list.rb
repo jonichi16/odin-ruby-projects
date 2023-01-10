@@ -7,10 +7,10 @@ class LinkedList
   attr_accessor :head
 
   def initialize(value = nil)
-    self.head = value
+    add_head(value)
   end
 
-  def add_head(value)
+  def add_head(value = nil)
     self.head = Node.new(value, nil)
     self
   end
