@@ -108,7 +108,25 @@ class LinkedList
     current
   end
 
+  def remove_at(index)
+    n = 0
+    current = head
+    removed = nil
+    prev = nil
+    until n == index
+      prev = current
+      current = current.next_node
+      n += 1
+    end
+    removed = current
+    current = removed.next_node
+    prev.next_node = current
+    removed
+  end
+
   def to_s
+    return 'nil' if head.nil?
+
     string = "( #{head.value} ) -> "
     current = head
     until current.next_node.nil?
