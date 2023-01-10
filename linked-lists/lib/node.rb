@@ -8,4 +8,8 @@ class Node
     self.value = value
     self.next_node = next_node
   end
+
+  def to_s
+    "( #{value} )"
+  end
 end
