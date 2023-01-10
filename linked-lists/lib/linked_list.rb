@@ -88,6 +88,26 @@ class LinkedList
     n
   end
 
+  def insert_at(value, index)
+    if index.zero?
+      prepend(value)
+      return head
+    end
+
+    current = head
+    prev = nil
+    n = 0
+    until n == index
+      prev = current
+      current = current.next_node
+      n += 1
+    end
+    temp = current
+    current = Node.new(value, temp)
+    prev.next_node = current
+    current
+  end
+
   def to_s
     string = "( #{head.value} ) -> "
     current = head
