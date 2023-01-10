@@ -44,4 +44,10 @@ class LinkedList
   def head
     first_node.value
   end
+
+  def tail
+    current = first_node
+    current = current.next_node until current.next_node.nil?
+    current.value
+  end
 end
