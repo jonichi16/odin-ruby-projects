@@ -4,40 +4,44 @@ require './lib/node'
 
 # *Represent the full list
 class LinkedList
-  attr_accessor :head
+  attr_accessor :first_node
 
   def initialize(value = nil)
-    self.head = value
+    self.first_node = value
   end
 
-  def add_head(value)
-    self.head = Node.new(value, nil)
+  def add_first_node(value)
+    self.first_node = Node.new(value, nil)
     self
   end
 
   def append(value)
-    return add_head(value) if head.nil?
+    return add_first_node(value) if first_node.nil?
 
-    current = head
+    current = first_node
     current = current.next_node until current.next_node.nil?
     current.next_node = Node.new(value, nil)
     self
   end
 
   def prepend(value)
-    return add_head(value) if head.nil?
+    return add_first_node(value) if first_node.nil?
 
-    self.head = Node.new(value, head)
+    self.first_node = Node.new(value, first_node)
     self
   end
 
   def size
     n = 0
-    current = head
+    current = first_node
     until current.nil?
       n += 1
       current = current.next_node
     end
     n
+  end
+
+  def head
+    first_node.value
   end
 end
