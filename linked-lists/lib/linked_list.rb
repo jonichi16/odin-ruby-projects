@@ -6,8 +6,8 @@ require './lib/node'
 class LinkedList
   attr_accessor :head
 
-  def initialize
-    self.head = nil
+  def initialize(value = nil)
+    self.head = value
   end
 
   def add_head(value)
@@ -29,5 +29,15 @@ class LinkedList
 
     self.head = Node.new(value, head)
     self
+  end
+
+  def size
+    n = 0
+    current = head
+    until current.nil?
+      n += 1
+      current = current.next_node
+    end
+    n
   end
 end
