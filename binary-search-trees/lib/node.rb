@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# * Create a node that contains data and reference to left and right node
 class Node
   include Comparable
   attr_accessor :data, :left, :right
