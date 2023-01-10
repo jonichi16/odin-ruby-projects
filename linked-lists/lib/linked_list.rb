@@ -72,11 +72,19 @@ class LinkedList
 
   def contains?(value)
     current = head
-    until current.next_node.nil?
-      current = current.next_node
-      return true if current.value == value
+    current = current.next_node if current.value != value
+    current.value == value
+  end
 
-      return false
+  def find(value)
+    return nil unless contains?(value)
+
+    n = 0
+    current = head
+    until current.value == value
+      current = current.next_node
+      n += 1
     end
+    n
   end
 end
