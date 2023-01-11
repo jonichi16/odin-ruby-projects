@@ -36,6 +36,7 @@ class Tree
     current
   end
 
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
   def delete(value, current = root)
     return current if current.nil?
 
@@ -52,6 +53,7 @@ class Tree
     end
     current
   end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   def min_value(root)
     min = root.data
