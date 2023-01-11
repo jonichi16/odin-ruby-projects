@@ -21,17 +21,19 @@ class Tree
     current
   end
 
-  def insert(value, current = root, prev = nil)
+  def insert(value, current = root)
     if current.nil?
-      return prev.left = Node.new(value) if value < prev.data
-
-      return prev.right = Node.new(value)
-
+      current = Node.new(value)
+      return current
     end
 
-    return current if current.data == value
+    if value < current.data
+      current.left = insert(value, current.left)
+    elsif value > current.data
+      current.right = insert(value, current.right)
+    end
 
-    value < current.data ? insert(value, current.left, current) : insert(value, current.right, current)
+    current
   end
 
   def delete(value, current = root)
@@ -48,7 +50,6 @@ class Tree
       current.data = min_value(current.right)
       current.right = delete(current.data, current.right)
     end
-
     current
   end
 
