@@ -70,7 +70,7 @@ class Tree
     elsif value > current.data
       find(value, current.right)
     else
-      pretty_print(current)
+      current
     end
   end
 
@@ -83,13 +83,40 @@ class Tree
     queue.push(root)
     until queue.empty?
       current = queue[0]
-      current.data = yield current.data
+      yield current.data
       queue.push(current.left) unless current.left.nil?
       queue.push(current.right) unless current.right.nil?
       queue.shift
     end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
+  def inorder(current = root, &block)
+    return array unless block_given?
+    return if current.nil?
+
+    inorder(current.left, &block)
+    yield current.data
+    inorder(current.right, &block)
+  end
+
+  def preorder(current = root, &block)
+    return array unless block_given?
+    return if current.nil?
+
+    yield current.data
+    preorder(current.left, &block)
+    preorder(current.right, &block)
+  end
+
+  def postorder(current = root, &block)
+    return array unless block_given?
+    return if current.nil?
+
+    postorder(current.left, &block)
+    postorder(current.right, &block)
+    yield current.data
+  end
 
   # rubocop:disable Style/OptionalBooleanParameter
   def pretty_print(node = @root, prefix = '', is_left = true)
