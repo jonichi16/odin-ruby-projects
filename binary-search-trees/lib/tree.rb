@@ -74,6 +74,23 @@ class Tree
     end
   end
 
+  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  def level_order
+    return array unless block_given?
+    return if root.nil?
+
+    queue = []
+    queue.push(root)
+    until queue.empty?
+      current = queue[0]
+      current.data = yield current.data
+      queue.push(current.left) unless current.left.nil?
+      queue.push(current.right) unless current.right.nil?
+      queue.shift
+    end
+  end
+  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
+
   # rubocop:disable Style/OptionalBooleanParameter
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
