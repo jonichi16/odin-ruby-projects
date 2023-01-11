@@ -41,6 +41,8 @@ class Tree
   def delete(value, current = root)
     return current if current.nil?
 
+    self.root = build_tree(balanced_array)
+
     if value < current.data
       current.left = delete(value, current.left)
     elsif value > current.data
@@ -146,6 +148,14 @@ class Tree
 
   def balanced?
     height(root.left) == height(root.right)
+  end
+
+  def rebalance
+    return array if balanced?
+
+    balanced_array = []
+    inorder(root) { |item| balanced_array.push(item) }
+    initialize(balanced_array)
   end
 
   # rubocop:disable Style/OptionalBooleanParameter
