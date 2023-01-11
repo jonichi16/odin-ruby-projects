@@ -3,6 +3,7 @@
 require './lib/node'
 
 # * Contains the reference to the tree
+# rubocop:disable Metrics/ClassLength
 class Tree
   attr_accessor :root, :array
 
@@ -65,6 +66,8 @@ class Tree
   end
 
   def find(value, current = root)
+    return nil if current.nil?
+
     if value < current.data
       find(value, current.left)
     elsif value > current.data
@@ -118,6 +121,15 @@ class Tree
     yield current.data
   end
 
+  def height(value)
+    unless value.nil?
+      current = value.instance_of?(Node) ? value : find(value)
+    end
+    return -1 if current.nil?
+
+    [height(current.left), height(current.right)].max + 1
+  end
+
   # rubocop:disable Style/OptionalBooleanParameter
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -126,3 +138,4 @@ class Tree
   end
   # rubocop:enable Style/OptionalBooleanParameter
 end
+# rubocop:enable Metrics/ClassLength
