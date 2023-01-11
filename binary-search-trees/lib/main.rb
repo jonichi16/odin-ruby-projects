@@ -2,16 +2,57 @@
 
 require './lib/tree'
 
-array = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-tree = Tree.new(array)
+# * Script
 
-tree.insert(123)
-tree.insert(174)
-tree.insert(157)
+array = Array.new(15) { rand(1..100) }
+tree = Tree.new(array)
+puts ' The First Binary Search Tree '.center(50, '*')
+puts ''
 tree.pretty_print
-p tree.height(8)
-p tree.depth(1)
-p tree.balanced?
+puts "\n○ This tree is #{tree.balanced? ? 'balanced' : 'not balanced'}"
+
+level_array = []
+tree.level_order { |item| level_array.push(item) }
+puts "\n○ Level Order Traversal: #{level_array}"
+
+preorder_array = []
+tree.preorder { |item| preorder_array.push(item) }
+puts "\n○ Pre-order Traversal: #{preorder_array}"
+
+postorder_array = []
+tree.postorder { |item| postorder_array.push(item) }
+puts "\n○ Post-order Traversal: #{postorder_array}"
+
+inorder_array = []
+tree.inorder { |item| inorder_array.push(item) }
+puts "\n○ Inorder Traversal: #{inorder_array}"
+
+10.times { tree.insert(rand(100..200)) }
+puts ''
+puts ' The New Binary Search Tree '.center(50, '*')
+puts ''
+tree.pretty_print
+puts "\n○ This tree is #{tree.balanced? ? 'balanced' : 'not balanced'}"
+
+puts ''
+puts ' The Balanced New Binary Search Tree '.center(50, '*')
+puts ''
 tree.rebalance
-p tree.balanced?
 tree.pretty_print
+puts "\n○ This tree is #{tree.balanced? ? 'balanced' : 'not balanced'}"
+
+level_array = []
+tree.level_order { |item| level_array.push(item) }
+puts "\n○ Level Order Traversal: #{level_array}"
+
+preorder_array = []
+tree.preorder { |item| preorder_array.push(item) }
+puts "\n○ Pre-order Traversal: #{preorder_array}"
+
+postorder_array = []
+tree.postorder { |item| postorder_array.push(item) }
+puts "\n○ Post-order Traversal: #{postorder_array}"
+
+inorder_array = []
+tree.inorder { |item| inorder_array.push(item) }
+puts "\n○ Inorder Traversal: #{inorder_array}"
