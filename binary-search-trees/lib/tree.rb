@@ -63,4 +63,22 @@ class Tree
     end
     min
   end
+
+  def find(value, current = root)
+    if value < current.data
+      find(value, current.left)
+    elsif value > current.data
+      find(value, current.right)
+    else
+      pretty_print(current)
+    end
+  end
+
+  # rubocop:disable Style/OptionalBooleanParameter
+  def pretty_print(node = @root, prefix = '', is_left = true)
+    pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
+    puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
+    pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
+  end
+  # rubocop:enable Style/OptionalBooleanParameter
 end
