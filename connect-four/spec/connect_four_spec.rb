@@ -52,20 +52,23 @@ describe ConnectFour do
     end
   end
 
-  # describe '#turn_order' do
-  #   let(:player_one) { double('player_1') }
-  #   let(:player_two) { double('player_2') }
-  #   subject(:game_turn_order) { described_class.new }
+  describe '#verify_input' do
+    subject(:game_verify) { described_class.new }
 
-  #   context 'when the game is not over' do
-  #     before do
-  #       allow(game_turn_order).to receive(game_over?).and_return(false, false, false, true)
-  #     end
+    context 'when player input is valid' do
+      it 'returns player input' do
+        input = 3
+        verified = game_verify.verify_input(input)
+        expect(verified).to eq(3)
+      end
+    end
 
-  #     xit 'switch the current player' do
-  #       expect(game).to receive(:current_player_switch).exactly(3).times
-  #       game_turn_order.turn_order
-  #     end
-  #   end
-  # end
+    context 'when player input is invalid' do
+      it 'returns nil' do
+        input = 8
+        verified = game_verify.verify_input(input)
+        expect(verified).to be_nil
+      end
+    end
+  end
 end
