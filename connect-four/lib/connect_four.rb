@@ -20,6 +20,7 @@ class ConnectFour
     # TODO:  1. Display the current board
     # TODO:  2. Get current player input
     # TODO:  3. Switch the current player
+    board.display_board
   end
 
   def player_input
