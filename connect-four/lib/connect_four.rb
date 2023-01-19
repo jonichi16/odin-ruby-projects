@@ -26,6 +26,7 @@ class ConnectFour
     # TODO:  3. Switch the current player
     board.display_board
     update_board
+    player_switch
   end
 
   def player_input
@@ -34,7 +35,7 @@ class ConnectFour
       verified = verify_input(user_input.to_i) if user_input.match?(/^\d$/)
       return verified if verified
 
-      puts 'Invalid Input! Please choose between column 1 and column 7'
+      puts "\nInvalid Input! Please choose between column 1 and column 7"
     end
   end
 
@@ -43,10 +44,14 @@ class ConnectFour
   end
 
   def update_board
-    puts "#{current_player.name} please choose to number of column your want to play"
+    puts "\n#{current_player.name} please choose between column 1 and column 7"
     column_number = player_input
     board.update_column(column_number - 1, current_player.token)
     board.display_board
+  end
+
+  def player_switch
+    @current_player = current_player == player_one ? player_two : player_one
   end
 
   private
