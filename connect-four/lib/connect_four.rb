@@ -1,13 +1,17 @@
 # frozen_string_literal: true
 
 require './lib/board'
+require './lib/player'
 
 # * Class for the main game
 class ConnectFour
-  attr_reader :board
+  attr_reader :board, :player_one, :player_two, :current_player
 
   def initialize(board = Board.new)
     @board = board
+    @player_one = Player.new('Player One', "\u{1F7E1}")
+    @player_two = Player.new('Player Two', "\u{1F534}")
+    @current_player = player_one
   end
 
   def play_game
@@ -21,6 +25,7 @@ class ConnectFour
     # TODO:  2. Get current player input
     # TODO:  3. Switch the current player
     board.display_board
+    update_board
   end
 
   def player_input
@@ -35,6 +40,13 @@ class ConnectFour
 
   def verify_input(input)
     return input if input.between?(1, 7)
+  end
+
+  def update_board
+    puts "#{current_player.name} please choose to number of column your want to play"
+    column_number = player_input
+    board.update_column(column_number - 1, current_player.token)
+    board.display_board
   end
 
   private
