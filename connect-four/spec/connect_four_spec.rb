@@ -3,6 +3,15 @@
 require './lib/connect_four'
 
 describe ConnectFour do
+  describe 'player one as the current player' do
+    subject(:game_init) { described_class.new }
+
+    it 'it sets player one as current player' do
+      current_player = game_init.current_player.name
+      expect(current_player).to eq('Player One')
+    end
+  end
+
   describe '#player_input' do
     subject(:game_input) { described_class.new }
 
@@ -69,6 +78,21 @@ describe ConnectFour do
         verified = game_verify.verify_input(input)
         expect(verified).to be_nil
       end
+    end
+  end
+
+  describe '#update_board' do
+    subject(:game_update) { described_class.new(board_update) }
+    let(:board_update) { double('board') }
+
+    before do
+      allow(game_update).to receive(:puts)
+      allow(game_update).to receive(:player_input).and_return(4)
+    end
+
+    it 'send a message to board to update the column' do
+      expect(board_update).to receive(:update_column).with(4, "\u{1F7E1}")
+      game_update.update_board
     end
   end
 end
