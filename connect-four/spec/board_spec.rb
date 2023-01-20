@@ -79,4 +79,240 @@ describe Board do
       end
     end
   end
+
+  describe '#horizontal_line' do
+    subject(:game_horizontal) { described_class.new }
+
+    context 'when one player form a horizontal line' do
+      before do
+        game_horizontal.board[1][3] = 'token 1'
+        game_horizontal.board[1][4] = 'token 1'
+        game_horizontal.board[1][5] = 'token 1'
+        game_horizontal.board[1][6] = 'token 1'
+      end
+
+      it 'returns true' do
+        token = 'token 1'
+        row = 1
+        col = 3
+        result = game_horizontal.horizontal_line(row, col, token)
+        expect(result).to be true
+      end
+    end
+
+    context 'when one player did not form a horizontal line' do
+      before do
+        game_horizontal.board[0][2] = 'token 1'
+        game_horizontal.board[0][4] = 'token 1'
+        game_horizontal.board[0][5] = 'token 1'
+        game_horizontal.board[0][6] = 'token 1'
+      end
+
+      it 'returns false' do
+        token = 'token 1'
+        row = 0
+        col = 3
+        result = game_horizontal.horizontal_line(row, col, token)
+        expect(result).not_to be true
+      end
+    end
+  end
+
+  describe '#vertical_line' do
+    subject(:game_vertical) { described_class.new }
+
+    context 'when one player form a vertical line' do
+      before do
+        game_vertical.board[1][6] = 'token 1'
+        game_vertical.board[2][6] = 'token 1'
+        game_vertical.board[3][6] = 'token 1'
+        game_vertical.board[4][6] = 'token 1'
+      end
+
+      it 'returns true' do
+        token = 'token 1'
+        row = 1
+        col = 6
+        result = game_vertical.vertical_line(row, col, token)
+        expect(result).to be true
+      end
+    end
+
+    context 'when one player did not form a vertical line' do
+      before do
+        game_vertical.board[1][2] = 'token 1'
+        game_vertical.board[2][2] = 'token 1'
+        game_vertical.board[3][2] = 'token 1'
+        game_vertical.board[5][2] = 'token 1'
+      end
+
+      it 'returns false' do
+        token = 'token 1'
+        row = 1
+        col = 2
+        result = game_vertical.vertical_line(row, col, token)
+        expect(result).not_to be true
+      end
+    end
+  end
+
+  describe '#right_diagonal' do
+    subject(:game_right) { described_class.new }
+
+    context 'when one player form a right diagonal line' do
+      before do
+        game_right.board[1][2] = 'token 1'
+        game_right.board[2][3] = 'token 1'
+        game_right.board[3][4] = 'token 1'
+        game_right.board[4][5] = 'token 1'
+      end
+
+      it 'returns true' do
+        token = 'token 1'
+        row = 1
+        col = 2
+        result = game_right.right_diagonal(row, col, token)
+        expect(result).to be true
+      end
+    end
+
+    context 'when one player did not form a right diagonal line' do
+      before do
+        game_right.board[1][2] = 'token 1'
+        game_right.board[2][3] = 'token 1'
+        game_right.board[3][4] = 'token 1'
+        game_right.board[5][5] = 'token 1'
+      end
+
+      it 'returns false' do
+        token = 'token 1'
+        row = 1
+        col = 2
+        result = game_right.right_diagonal(row, col, token)
+        expect(result).not_to be true
+      end
+    end
+  end
+
+  describe '#left_diagonal' do
+    subject(:game_left) { described_class.new }
+
+    context 'when one player form a left diagonal line' do
+      before do
+        game_left.board[1][4] = 'token 1'
+        game_left.board[2][3] = 'token 1'
+        game_left.board[3][2] = 'token 1'
+        game_left.board[4][1] = 'token 1'
+      end
+
+      it 'returns true' do
+        token = 'token 1'
+        row = 1
+        col = 4
+        result = game_left.left_diagonal(row, col, token)
+        expect(result).to be true
+      end
+    end
+
+    context 'when one player did not form a left diagonal line' do
+      before do
+        game_left.board[1][4] = 'token 1'
+        game_left.board[2][3] = 'token 1'
+        game_left.board[3][2] = 'token 1'
+        game_left.board[4][0] = 'token 1'
+      end
+
+      it 'returns false' do
+        token = 'token 1'
+        row = 1
+        col = 4
+        result = game_left.left_diagonal(row, col, token)
+        expect(result).not_to be true
+      end
+    end
+  end
+
+  describe '#check_board' do
+    subject(:game_board_check) { described_class.new }
+
+    context 'when there is a horizontal winning condition' do
+      before do
+        game_board_check.board[1][3] = 'token 1'
+        game_board_check.board[1][4] = 'token 1'
+        game_board_check.board[1][5] = 'token 1'
+        game_board_check.board[1][6] = 'token 1'
+        token = 'token 1'
+        game_board_check.game_check(token)
+      end
+
+      it 'set the game to finish' do
+        result = game_board_check.board_finish
+        expect(result).to be true
+      end
+    end
+
+    context 'when there is a veritcal winning condition' do
+      before do
+        game_board_check.board[1][6] = 'token 1'
+        game_board_check.board[2][6] = 'token 1'
+        game_board_check.board[3][6] = 'token 1'
+        game_board_check.board[4][6] = 'token 1'
+        token = 'token 1'
+        game_board_check.game_check(token)
+      end
+
+      it 'set the game to finish' do
+        result = game_board_check.board_finish
+        expect(result).to be true
+      end
+    end
+
+    context 'when there is a right diagonal winning condition' do
+      before do
+        game_board_check.board[1][2] = 'token 1'
+        game_board_check.board[2][3] = 'token 1'
+        game_board_check.board[3][4] = 'token 1'
+        game_board_check.board[4][5] = 'token 1'
+        token = 'token 1'
+        game_board_check.game_check(token)
+      end
+
+      it 'set the game to finish' do
+        result = game_board_check.board_finish
+        expect(result).to be true
+      end
+    end
+
+    context 'when there is a left diagonal winning condition' do
+      before do
+        game_board_check.board[1][4] = 'token 1'
+        game_board_check.board[2][3] = 'token 1'
+        game_board_check.board[3][2] = 'token 1'
+        game_board_check.board[4][1] = 'token 1'
+        token = 'token 1'
+        game_board_check.game_check(token)
+      end
+
+      it 'set the game to finish' do
+        result = game_board_check.board_finish
+        expect(result).to be true
+      end
+    end
+
+    context 'when there is no winning condition' do
+      before do
+        game_board_check.board[0][4] = 'token 1'
+        game_board_check.board[2][3] = 'token 1'
+        game_board_check.board[3][2] = 'token 1'
+        game_board_check.board[4][1] = 'token 1'
+        token = 'token 1'
+        game_board_check.game_check(token)
+      end
+
+      it 'set the game to continue' do
+        result = game_board_check.board_finish
+        expect(result).not_to be true
+      end
+    end
+  end
 end
