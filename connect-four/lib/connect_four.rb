@@ -16,26 +16,24 @@ class ConnectFour
 
   def play_game
     introduction
-    turn_order
+    turn_order until game_over?
+    final_message
   end
 
   def turn_order
-    # TODO: looping method that will:
-    # TODO:  1. Display the current board
-    # TODO:  2. Get current player input
-    # TODO:  3. Switch the current player
-    board.display_board
     update_board
-    player_switch
+    board.game_check(current_player.token)
+    player_switch unless game_over?
   end
 
   def player_input
     loop do
       user_input = gets.chomp
       verified = verify_input(user_input.to_i) if user_input.match?(/^\d$/)
-      return verified if verified
+      return verified if verified && !board.full_column(user_input.to_i - 1) 
 
-      puts "\nInvalid Input! Please choose between column 1 and column 7"
+      puts "\n\e[31mInvalid Input!\e[0m Please choose between column 1 and column 7"
+      puts "\e[31mColumn #{user_input} is already full\e[0m" if board.full_column(user_input.to_i - 1)
     end
   end
 
@@ -54,8 +52,13 @@ class ConnectFour
     @current_player = current_player == player_one ? player_two : player_one
   end
 
+  def game_over?
+    board.board_finish
+  end
+
   private
 
+  # rubocop:disable Metrics/MethodLength
   def introduction
     puts <<~HEREDOC
 
@@ -72,6 +75,16 @@ class ConnectFour
 
       \e[32m\e[1mLET'S START!\e2\e[0m
 
+
     HEREDOC
+
+    board.display_board
+  end
+  # rubocop:enable Metrics/MethodLength
+
+  def final_message
+    puts ''
+    puts " \e[32mCongratulations! #{current_player.name} won!\e[0m ".center(50, '*')
+    puts ''
   end
 end

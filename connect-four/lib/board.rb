@@ -71,6 +71,10 @@ class Board
     end
   end
 
+  def full_column(column)
+    !board[5][column].nil?
+  end
+
   private
 
   def create_board
@@ -80,7 +84,7 @@ class Board
       Array.new(7),
       Array.new(7),
       Array.new(7),
-      Array.new(7)
+      Array.new(7),
     ]
   end
 
@@ -102,12 +106,3 @@ class Board
     puts rows.join("\n")
   end
 end
-
-# board = Board.new
-# puts board.display_board
-# board.update_column(4, '0')
-# puts board.display_board
-# board.update_column(4, '1')
-# puts board.display_board
-# board.update_column(3, '0')
-# puts board.display_board

@@ -315,4 +315,28 @@ describe Board do
       end
     end
   end
+
+  describe '#full_column' do
+    subject(:board_full) { described_class.new }
+
+    context 'when one column is full' do
+      before do
+        board_full.board[5][0] = '0'
+      end
+
+      it 'returns true' do
+        column = 0
+        result = board_full.full_column(column)
+        expect(result).to be true
+      end
+    end
+
+    context 'when one column is not full' do
+      it 'returns false' do
+        column = 0
+        result = board_full.full_column(column)
+        expect(result).not_to be true
+      end
+    end
+  end
 end

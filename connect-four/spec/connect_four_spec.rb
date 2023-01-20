@@ -18,14 +18,14 @@ describe ConnectFour do
     context 'when player input is between arguments and edge case' do
       it 'stop loops and does not return an error message' do
         allow(game_input).to receive(:gets).and_return('2')
-        err_msg = "\nInvalid Input! Please choose between column 1 and column 7"
+        err_msg = "\n\e[31mInvalid Input!\e[0m Please choose between column 1 and column 7"
         expect(game_input).not_to receive(:puts).with(err_msg)
         game_input.player_input
       end
 
       it 'stop loops and does not return an error message' do
         allow(game_input).to receive(:gets).and_return('7')
-        err_msg = "\nInvalid Input! Please choose between column 1 and column 7"
+        err_msg = "\n\e[31mInvalid Input!\e[0m Please choose between column 1 and column 7"
         expect(game_input).not_to receive(:puts).with(err_msg)
         game_input.player_input
       end
@@ -39,7 +39,7 @@ describe ConnectFour do
       end
 
       it 'return an error message once' do
-        err_msg = "\nInvalid Input! Please choose between column 1 and column 7"
+        err_msg = "\n\e[31mInvalid Input!\e[0m Please choose between column 1 and column 7"
         expect(game_input).to receive(:puts).with(err_msg).once
         game_input.player_input
       end
@@ -54,7 +54,7 @@ describe ConnectFour do
       end
 
       it 'return an error message twice' do
-        err_msg = "\nInvalid Input! Please choose between column 1 and column 7"
+        err_msg = "\n\e[31mInvalid Input!\e[0m Please choose between column 1 and column 7"
         expect(game_input).to receive(:puts).with(err_msg).twice
         game_input.player_input
       end
