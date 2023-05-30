@@ -45,6 +45,7 @@ class ConnectFour
     puts "\n#{current_player.name} please choose between column 1 and column 7"
     column_number = player_input
     board.update_column(column_number - 1, current_player.token)
+    print "\e[2J\e[f"
     board.display_board
   end
 
@@ -60,6 +61,7 @@ class ConnectFour
 
   # rubocop:disable Metrics/MethodLength
   def introduction
+    print "\e[2J\e[f"
     puts <<~HEREDOC
 
       \e[32m\e[1m#{'Welcome to Connect Four'.center(50, ' ')}\e2\e[0m
